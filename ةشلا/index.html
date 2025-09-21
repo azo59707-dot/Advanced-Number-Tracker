@@ -1,147 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق تتبع الأرقام</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🔢 تطبيق تتبع الأرقام</h1>
-            <p>تتبع وإدارة الأرقام المهمة بسهولة</p>
-        </header>
-
-        <div class="main-content">
-            <div class="add-section">
-                <h2>إعدادات API</h2>
-                <div class="api-settings">
-                    <div class="form-group">
-                        <label for="apiKey">API Key (اختياري):</label>
-                        <input type="text" id="apiKey" placeholder="أدخل API Key من Abstract API">
-                        <small style="color: #666; font-size: 12px;">
-                            احصل على API Key مجاني من <a href="https://www.abstractapi.com/phone-validation-api" target="_blank">Abstract API</a>
-                            | <a href="api-setup.html" target="_blank">تعليمات مفصلة</a>
-                        </small>
-                    </div>
-                    <button type="button" onclick="saveApiKey()" style="background: #4299e1; margin-bottom: 20px;">
-                        💾 حفظ API Key
-                    </button>
-                </div>
-                
-                <h2>إضافة رقم جديد</h2>
-                <form id="numberForm">
-                    <div class="form-group">
-                        <label for="number">الرقم:</label>
-                        <input type="text" id="number" placeholder="أدخل الرقم" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">الوصف:</label>
-                        <input type="text" id="description" placeholder="وصف الرقم (اختياري)">
-                    </div>
-                    <div class="form-group">
-                        <label for="category">الفئة:</label>
-                        <select id="category">
-                            <option value="عام">عام</option>
-                            <option value="هاتف">رقم هاتف</option>
-                            <option value="طلب">رقم طلب</option>
-                            <option value="شحنة">رقم شحنة</option>
-                            <option value="حساب">رقم حساب</option>
-                            <option value="أخرى">أخرى</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="status">الحالة:</label>
-                        <select id="status">
-                            <option value="نشط">نشط</option>
-                            <option value="معلق">معلق</option>
-                            <option value="مكتمل">مكتمل</option>
-                            <option value="ملغي">ملغي</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="phoneType">نوع الرقم:</label>
-                        <select id="phoneType">
-                            <option value="جوال">جوال</option>
-                            <option value="ثابت">رقم ثابت</option>
-                            <option value="فاكس">فاكس</option>
-                            <option value="غير محدد">غير محدد</option>
-                        </select>
-                    </div>
-                    <button type="submit">إضافة الرقم</button>
-                    <button type="button" id="trackLocationBtn" onclick="trackNumberLocation()" style="background: #38a169; margin-top: 10px;">
-                        📍 تتبع موقع الرقم
-                    </button>
-                </form>
-            </div>
-
-            <div class="search-section">
-                <h2>البحث والفلترة</h2>
-                <div class="search-controls">
-                    <input type="text" id="searchInput" placeholder="البحث في الأرقام...">
-                    <select id="categoryFilter">
-                        <option value="">جميع الفئات</option>
-                        <option value="عام">عام</option>
-                        <option value="هاتف">رقم هاتف</option>
-                        <option value="طلب">رقم طلب</option>
-                        <option value="شحنة">رقم شحنة</option>
-                        <option value="حساب">رقم حساب</option>
-                        <option value="أخرى">أخرى</option>
-                    </select>
-                    <select id="statusFilter">
-                        <option value="">جميع الحالات</option>
-                        <option value="نشط">نشط</option>
-                        <option value="معلق">معلق</option>
-                        <option value="مكتمل">مكتمل</option>
-                        <option value="ملغي">ملغي</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="numbers-section">
-                <h2>الأرقام المتتبعة</h2>
-                <div id="numbersList" class="numbers-list">
-                    <!-- سيتم إضافة الأرقام هنا ديناميكياً -->
-                </div>
-            </div>
-
-            <!-- خريطة مصغرة للموقع الحالي -->
-            <div class="mini-map-section">
-                <h2>📍 موقعك الحالي</h2>
-                <div id="miniMapContainer" class="mini-map-container">
-                    <div id="miniMap" style="height: 200px; width: 100%; border-radius: 10px;"></div>
-                </div>
-                <div class="mini-map-controls">
-                    <button onclick="getCurrentLocation()" style="background: #38a169; margin: 5px;">
-                        📍 تحديد موقعي
-                    </button>
-                    <button onclick="centerMiniMap()" style="background: #4299e1; margin: 5px;">
-                        🎯 توسيط الخريطة
-                    </button>
-                </div>
-            </div>
-
-            <!-- قسم الخريطة الرئيسية -->
-            <div class="map-section">
-                <h2>🗺️ خريطة مواقع الأرقام</h2>
-                <div id="mapContainer" class="map-container">
-                    <div id="map" style="height: 400px; width: 100%; border-radius: 10px;"></div>
-                </div>
-                <div class="map-controls">
-                    <button onclick="showAllLocations()" style="background: #4299e1; margin: 5px;">
-                        📍 عرض جميع المواقع
-                    </button>
-                    <button onclick="centerMap()" style="background: #38a169; margin: 5px;">
-                        🎯 توسيط الخريطة
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
-    <script src="script.js"></script>
-</body>
-</html>
